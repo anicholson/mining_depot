@@ -1,6 +1,6 @@
 # MiningDepot
 
-TODO: Write a gem description
+A little gem that simulates resource production & consumption.
 
 ## Installation
 
@@ -18,7 +18,7 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+You can't yet, it's only just started :)
 
 ## Contributing
 
