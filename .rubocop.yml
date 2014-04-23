@@ -1,0 +1,6 @@
+AllCops:
+  Excludes:
+  - spec/**
+
+Documentation:
+  Enabled: false
