@@ -10,13 +10,13 @@ Gem::Specification.new do |spec|
   spec.email         = ['andrew@anicholson.net']
   spec.description   = %q{A project to test Bob Martin's architecture style}
   spec.summary       = %q{A small mining/distribution simulator}
-  spec.homepage      = ''
+  spec.homepage      = 'https://github.com/anicholson/mining_depot'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files`.split($/)
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
-  spec.require_paths = ['lib', 'interactors', 'entities']
+  spec.require_paths = ['lib']
 
   spec.add_dependency 'mutations'
 
