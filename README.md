@@ -2,6 +2,8 @@
 
 A little gem that simulates resource production & consumption.
 
+[![Code Climate](https://codeclimate.com/github/anicholson/mining_depot.png)](https://codeclimate.com/github/anicholson/mining_depot)
+
 ## Installation
 
 Add this line to your application's Gemfile:
