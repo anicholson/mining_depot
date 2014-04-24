@@ -1,6 +1,7 @@
 AllCops:
   Exclude:
   - spec/**
+  - mining_depot.gemspec
 
 Documentation:
   Enabled: false

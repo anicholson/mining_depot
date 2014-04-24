@@ -20,7 +20,7 @@ describe Mine do
       context 'newly created' do
         it 'is :stopped' do
           subject[:state].should == :stopped
-	end
+        end
       end
     end
   end
@@ -29,13 +29,20 @@ describe Mine do
     context 'mine is stopped' do
       it 'starts the mine' do
         result = subject.start
-	result.should == :started
+        result.should == :started
       end
 
       it 'changes the status' do
         subject.start
-	subject.status[:state].should == :started
+        subject.status[:state].should == :started
       end
+    end
+  end
+
+  describe 'product' do
+    it { should respond_to :product }
+    it 'returns a Symbol' do
+      subject.product.should be_a Symbol
     end
   end
 end

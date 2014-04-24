@@ -14,4 +14,8 @@ class Mine < MiningDepot::Entity
   def start
     @state = :started
   end
+
+  def product
+    :gold
+  end
 end
