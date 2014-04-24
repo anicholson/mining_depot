@@ -11,6 +11,9 @@ require 'bundler/setup'
 require 'simplecov'
 require 'simplecov-rcov'
 require 'pry'
+require 'coveralls'
+
+Coveralls.wear!
 
 class SimpleCov::Formatter::MergedFormatter
   def format(result)
