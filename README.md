@@ -2,7 +2,7 @@
 
 A little gem that simulates resource production & consumption.
 
-[![Code Climate](https://codeclimate.com/github/anicholson/mining_depot.png)](https://codeclimate.com/github/anicholson/mining_depot)
+[![Code Climate](https://codeclimate.com/github/anicholson/mining_depot.png)](https://codeclimate.com/github/anicholson/mining_depot) [![Coverage Status](https://coveralls.io/repos/anicholson/mining_depot/badge.png)](https://coveralls.io/r/anicholson/mining_depot) [![Build Status](https://travis-ci.org/anicholson/mining_depot.svg)](https://travis-ci.org/anicholson/mining_depot)
 
 ## Installation
 
