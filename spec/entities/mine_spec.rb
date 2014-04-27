@@ -32,6 +32,11 @@ describe Mine do
         result.should == :started
       end
 
+      it 'locks before changing status' do
+        subject.semaphore.should_receive :synchronize
+	subject.start
+      end
+
       it 'changes the status' do
         subject.instance_variable_get(:@machinery).should_receive :run
         subject.start
@@ -46,4 +51,6 @@ describe Mine do
       subject.product.should be_a Symbol
     end
   end
+
+  its(:semaphore) { should be_a Mutex }
 end

@@ -1,6 +1,8 @@
 require 'mining_depot/entity'
 
 class Mine < MiningDepot::Entity
+  attr_accessor :semaphore
+
   class Machinery < Thread
 
   end
@@ -8,6 +10,7 @@ class Mine < MiningDepot::Entity
   def initialize
     @state     = :stopped
     @machinery = machine
+    @semaphore = Mutex.new
   end
 
   def status
@@ -17,7 +20,7 @@ class Mine < MiningDepot::Entity
   end
 
   def start
-    @state = :started
+    semaphore.synchronize { @state = :started }
     @machinery.run
     @state
   end
