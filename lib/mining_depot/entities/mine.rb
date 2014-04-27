@@ -1,8 +1,13 @@
 require 'mining_depot/entity'
 
 class Mine < MiningDepot::Entity
+  class Machinery < Thread
+
+  end
+
   def initialize
-    @state = :stopped
+    @state     = :stopped
+    @machinery = machine
   end
 
   def status
@@ -13,9 +18,23 @@ class Mine < MiningDepot::Entity
 
   def start
     @state = :started
+    @machinery.run
+    @state
   end
 
   def product
     :gold
   end
+
+  private
+
+  def machine
+    Machinery.new(self) do |mine|
+      while mine.status[:state] == :started
+        sleep 2
+        puts 'mining'
+      end
+    end
+  end
+
 end

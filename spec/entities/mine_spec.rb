@@ -33,6 +33,7 @@ describe Mine do
       end
 
       it 'changes the status' do
+        subject.instance_variable_get(:@machinery).should_receive :run
         subject.start
         subject.status[:state].should == :started
       end
