@@ -25,8 +25,8 @@ describe Mine do
     end
   end
 
-  describe 'start' do
-    context 'mine is stopped' do
+  describe '#start' do
+    context 'when mine is stopped' do
       it 'starts the mine' do
         result = subject.start
         result.should == :started
@@ -43,11 +43,26 @@ describe Mine do
       end
     end
 
-    context 'mine already running' do
+    context 'when mine already running' do
       before { subject.instance_variable_set(:@state, :started) }
       it 'does not signal the machinery' do
-        subject.start_trigger.should_not_receive :broadcast
+        subject.trigger.should_not_receive :broadcast
         subject.start
+      end
+    end
+  end
+
+  describe '#stop' do
+    context 'when mine is stopped' do
+      it 'does not sigal the machinery' do
+        subject.trigger.should_not_receive :broadcast
+	subject.stop
+      end
+
+      it 'does not change the status' do
+	subject.status[:state].should == :stopped
+	subject.stop
+	subject.status[:state].should == :stopped
       end
     end
   end

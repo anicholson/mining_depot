@@ -1,16 +1,16 @@
 require 'mining_depot/entity'
 
 class Mine < MiningDepot::Entity
-  attr_accessor :semaphore, :logger, :start_trigger
+  attr_accessor :semaphore, :logger, :trigger
 
   class Machinery < Thread
   end
 
   def initialize
-    @state         = :stopped
-    @machinery     = machine
-    @semaphore     = Mutex.new
-    @start_trigger = ConditionVariable.new
+    @state     = :stopped
+    @machinery = machine
+    @semaphore = Mutex.new
+    @trigger   = ConditionVariable.new
   end
 
   def status
@@ -22,8 +22,12 @@ class Mine < MiningDepot::Entity
   def start
     return @state if @state == :started
     semaphore.synchronize { @state = :started }
-    start_trigger.broadcast
+    trigger.broadcast
     @state
+  end
+
+  def stop
+
   end
 
   def product
