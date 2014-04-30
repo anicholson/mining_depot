@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Mine do
   it { should be_a MiningDepot::Entity }
 
-  describe 'status' do
+  describe '#status' do
     let(:result) { Mine.new.status }
     it { should respond_to :status }
     it 'returns a Hash' do
@@ -65,6 +65,11 @@ describe Mine do
 	subject.status[:state].should == :stopped
       end
     end
+  end
+
+  describe '#machine' do
+    subject { Mine.new.send :machine }
+    it { should be_a Mine::Machinery }
   end
 
   describe 'product' do
