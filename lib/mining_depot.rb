@@ -1,6 +1,7 @@
 require 'mining_depot/version'
 require 'mining_depot/interactor'
 require 'mining_depot/entity'
+require 'logger'
 
 # rubocop:disable LineLength
 %w(entities interactors).each do |src_directory|
@@ -10,3 +11,5 @@ end
 
 module MiningDepot
 end
+
+MiningDepot::Entity.logger = Logger.new('mining_depot.log')
