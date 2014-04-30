@@ -4,7 +4,6 @@ class Mine < MiningDepot::Entity
   attr_accessor :semaphore, :logger, :start_trigger
 
   class Machinery < Thread
-
   end
 
   def initialize
@@ -21,6 +20,7 @@ class Mine < MiningDepot::Entity
   end
 
   def start
+    return @state if @state == :started
     semaphore.synchronize { @state = :started }
     start_trigger.broadcast
     @state
@@ -40,5 +40,4 @@ class Mine < MiningDepot::Entity
       end
     end
   end
-
 end

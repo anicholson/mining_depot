@@ -42,6 +42,14 @@ describe Mine do
         subject.status[:state].should == :started
       end
     end
+
+    context 'mine already running' do
+      before { subject.instance_variable_set(:@state, :started) }
+      it 'does not signal the machinery' do
+        subject.start_trigger.should_not_receive :broadcast
+        subject.start
+      end
+    end
   end
 
   describe 'product' do
