@@ -40,6 +40,10 @@ class Mine < MiningDepot::Entity
   end
 
   def stop
+    return @state if @state == :stopped
+    semaphore.synchronize { @state = :stopped }
+    trigger.broadcast
+    @state
   end
 
   def product

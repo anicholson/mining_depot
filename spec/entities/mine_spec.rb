@@ -65,6 +65,30 @@ describe Mine do
 	subject.status[:state].should == :stopped
       end
     end
+
+    context 'when mine is started' do
+      before { subject.instance_variable_set(:@state, :started) }
+
+      it 'signals the machinery' do
+        subject.trigger.should_receive :broadcast
+	subject.stop
+      end
+
+      it 'stops the mine' do
+        result = subject.stop
+	result.should == :stopped
+      end
+
+      it 'locks before changing status' do
+        subject.semaphore.should_receive :synchronize
+	subject.stop
+      end
+
+      it 'changes the status' do
+        subject.stop
+	subject.status[:state].should == :stopped
+      end
+    end
   end
 
   describe '#machine' do
