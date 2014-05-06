@@ -28,7 +28,10 @@ class Mine < MiningDepot::Entity
 
   def status
     {
-      state: @state
+      state: @state,
+      depot: {
+        gold: 0
+      }
     }
   end
 
@@ -46,8 +49,8 @@ class Mine < MiningDepot::Entity
     @state
   end
 
-  def product
-    :gold
+  def products
+    [:gold]
   end
 
   private

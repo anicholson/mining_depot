@@ -1,10 +1,11 @@
 require 'spec_helper'
 
 describe Mine do
+  let(:mine) { Mine.new }
   it { should be_a MiningDepot::Entity }
 
   describe '#status' do
-    let(:result) { Mine.new.status }
+    let(:result) { mine.status }
     it { should respond_to :status }
     it 'returns a Hash' do
       result.should be_a Hash
@@ -13,8 +14,20 @@ describe Mine do
     describe 'return value' do
       subject { result }
       it { should have_key :state }
+      it { should have_key :depot }
+
       its 'state: IS_A Symbol' do
         subject[:state].should be_a Symbol
+      end
+
+      its 'depot: IS_A Hash' do
+        subject[:depot].should be_a Hash
+      end
+
+      its 'depot: has all products' do
+        mine.products.each do |product|
+          subject[:depot].should have_key product
+	end
       end
 
       context 'newly created' do
@@ -97,9 +110,10 @@ describe Mine do
   end
 
   describe 'product' do
-    it { should respond_to :product }
-    it 'returns a Symbol' do
-      subject.product.should be_a Symbol
+    it { should respond_to :products }
+    it 'returns an array of Symbol' do
+      subject.products.should be_an Array
+      subject.products.each {|prod| prod.should be_a  Symbol }
     end
   end
 
