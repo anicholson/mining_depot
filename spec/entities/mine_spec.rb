@@ -1,8 +1,15 @@
 require 'spec_helper'
 
 describe Mine do
-  let(:mine) { Mine.new }
+  let(:mine) { Mine.new minerals: :silver }
   it { should be_a MiningDepot::Entity }
+
+  describe '#products' do
+    let(:result) { mine.products }
+    it 'includes all minerals' do
+      result.should include(:silver)
+    end
+  end
 
   describe '#status' do
     let(:result) { mine.status }
@@ -27,12 +34,12 @@ describe Mine do
       its 'depot: has all products' do
         mine.products.each do |product|
           subject[:depot].should have_key product
-	end
+        end
       end
 
       context 'newly created' do
         it 'is :stopped' do
-          subject[:state].should == :stopped
+          subject[:state].should eq :stopped
         end
       end
     end
@@ -42,17 +49,17 @@ describe Mine do
     context 'when mine is stopped' do
       it 'starts the mine' do
         result = subject.start
-        result.should == :started
+        result.should eq :started
       end
 
       it 'locks before changing status' do
         subject.semaphore.should_receive :synchronize
-	subject.start
+        subject.start
       end
 
       it 'changes the status' do
         subject.start
-        subject.status[:state].should == :started
+        subject.status[:state].should eq :started
       end
     end
 
@@ -69,13 +76,13 @@ describe Mine do
     context 'when mine is stopped' do
       it 'does not sigal the machinery' do
         subject.trigger.should_not_receive :broadcast
-	subject.stop
+        subject.stop
       end
 
       it 'does not change the status' do
-	subject.status[:state].should == :stopped
-	subject.stop
-	subject.status[:state].should == :stopped
+        subject.status[:state].should eq :stopped
+        subject.stop
+        subject.status[:state].should eq :stopped
       end
     end
 
@@ -84,22 +91,22 @@ describe Mine do
 
       it 'signals the machinery' do
         subject.trigger.should_receive :broadcast
-	subject.stop
+        subject.stop
       end
 
       it 'stops the mine' do
         result = subject.stop
-	result.should == :stopped
+        result.should eq :stopped
       end
 
       it 'locks before changing status' do
         subject.semaphore.should_receive :synchronize
-	subject.stop
+        subject.stop
       end
 
       it 'changes the status' do
         subject.stop
-	subject.status[:state].should == :stopped
+        subject.status[:state].should eq :stopped
       end
     end
   end
@@ -110,10 +117,11 @@ describe Mine do
   end
 
   describe 'product' do
+    subject { mine }
     it { should respond_to :products }
     it 'returns an array of Symbol' do
       subject.products.should be_an Array
-      subject.products.each {|prod| prod.should be_a  Symbol }
+      subject.products.each { |prod| prod.should be_a Symbol }
     end
   end
 

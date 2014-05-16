@@ -8,7 +8,7 @@ describe StartMine do
 
     describe 'a mine to start' do
       context 'when provided' do
-        let(:input) {{ mine: Mine.new }}
+        let(:input) {{ mine: Mine.new(minerals: :silver) }}
 
         it 'runs' do
           StartMine.any_instance.should_receive(:execute)

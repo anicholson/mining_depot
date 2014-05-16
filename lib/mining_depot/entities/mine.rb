@@ -18,20 +18,19 @@ class Mine < MiningDepot::Entity
     end
   end
 
-  def initialize
+  def initialize(options = {})
     @logger    = MiningDepot::Entity.logger
     @state     = :stopped
     @semaphore = Mutex.new
     @trigger   = ConditionVariable.new
     @machinery = machine
+    @minerals  = options[:minerals] || {}
   end
 
   def status
     {
       state: @state,
-      depot: {
-        gold: 0
-      }
+      depot: depot_storage
     }
   end
 
@@ -50,7 +49,14 @@ class Mine < MiningDepot::Entity
   end
 
   def products
-    [:gold]
+    [@minerals]
+  end
+
+  def depot_storage
+    products.reduce({}) do |h, mineral|
+      h[mineral] = 0
+      h
+    end
   end
 
   private
