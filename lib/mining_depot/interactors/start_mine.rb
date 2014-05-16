@@ -6,5 +6,6 @@ class StartMine < Interactor
   end
 
   def execute
+    mine.start
   end
 end
