@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Mine do
-  let(:mine) { Mine.new minerals: :silver }
+  let(:mine) { Mine.new logger: double, minerals: :silver }
   it { should be_a MiningDepot::Entity }
 
   describe '#products' do
@@ -112,8 +112,16 @@ describe Mine do
   end
 
   describe '#machine' do
-    subject { Mine.new.send :machine }
-    it { should be_a Mine::Machinery }
+    let(:logger) { double('logger', warn: true) }
+    let(:mine) { Mine.new logger: logger, minerals: :copper }
+    it { mine.instance_variable_get(:@machinery).should be_a Mine::Machinery }
+
+    it 'logs when the mine is in a strange state' do
+      Mine::Machinery.any_instance.stub(:mine_state).and_return(:WAT)
+      m = Mine.new logger: logger, minerals: :lol
+      sleep(0.01)
+      expect(logger).to have_received(:warn)
+    end
   end
 
   describe 'product' do

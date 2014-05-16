@@ -12,14 +12,19 @@ class Mine < MiningDepot::Entity
       @id +=  1
     end
 
-    def initialize(_)
+    def initialize(mine)
       @error_logger = Logger.new('errors.log')
-      super(_)
+      @mine = mine
+      super(mine)
+    end
+
+    def mine_state
+      @mine.semaphore.synchronize { @mine.status[:state] }
     end
   end
 
   def initialize(options = {})
-    @logger    = MiningDepot::Entity.logger
+    @logger    = options[:logger] || MiningDepot::Entity.logger
     @state     = :stopped
     @semaphore = Mutex.new
     @trigger   = ConditionVariable.new
@@ -66,11 +71,8 @@ class Mine < MiningDepot::Entity
     Machinery.new(self) do |m|
       begin
         mine_number = Machinery.next_mine_number
-        state       = nil
-
         loop do
-          m.semaphore.synchronize { state = m.status[:state] }
-
+          state = Thread.current.mine_state
           case state
           when :started
             m.logger.info "#{mine_number}: mining"
@@ -83,8 +85,8 @@ class Mine < MiningDepot::Entity
           end
         end
       rescue => e
-        error_logger.warn(e.message)
-        error_logger.warn(e.backtrace)
+        Machinery.error_logger.warn(e.message)
+        Machinery.error_logger.warn(e.backtrace)
         raise e
       end
     end
