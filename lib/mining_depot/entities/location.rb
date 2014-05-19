@@ -5,8 +5,8 @@ class Location < MiningDepot::Entity
   attr_reader :coordinates, :name
 
   def initialize(params = {})
-    x    = params[:x] || 0
-    y    = params[:y] || 0
+    x     = params[:x] || 0
+    y     = params[:y] || 0
     @name = params[:name]
     @coordinates = Hashie::Mash.new(x: x, y: y)
   end
