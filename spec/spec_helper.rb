@@ -31,6 +31,8 @@ SimpleCov.start do
   add_group 'Library' do |src_file|
     src_file.filename.match %r{lib/mining_depot/[^/]+.rb}
   end
+
+  add_filter "/spec/"
 end
 
 require 'mining_depot'
