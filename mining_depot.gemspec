@@ -20,6 +20,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'mutations'
   spec.add_dependency 'virtus'
+  spec.add_dependency 'hashie'
 
   spec.add_development_dependency 'bundler', '~> 1.3'
   spec.add_development_dependency 'rake'
@@ -29,6 +30,4 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'simplecov'
   spec.add_development_dependency 'simplecov-rcov'
   spec.add_development_dependency 'pry'
-
-  spec.add_dependency 'hashie'
 end
