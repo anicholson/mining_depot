@@ -100,7 +100,7 @@ describe Mine do
       end
 
       it 'locks before changing status' do
-        subject.semaphore.should_receive :synchronize
+        subject.semaphore.should_receive(:synchronize).at_least(:once)
         subject.stop
       end
 
