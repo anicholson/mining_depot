@@ -59,9 +59,8 @@ class Mine < MiningDepot::Entity
   end
 
   def depot_storage
-    products.reduce({}) do |h, mineral|
+    products.each_with_object({}) do |mineral, h|
       h[mineral] = 0
-      h
     end
   end
 
