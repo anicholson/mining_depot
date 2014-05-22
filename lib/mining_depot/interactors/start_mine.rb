@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'mining_depot/interactor'
 
 class StartMine < Interactor

@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'mining_depot/version'
 require 'mining_depot/interactor'
 require 'mining_depot/entity'
