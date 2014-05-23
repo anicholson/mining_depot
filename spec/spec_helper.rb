@@ -8,31 +8,33 @@
 
 require 'bundler/setup'
 
-require 'simplecov'
-require 'simplecov-rcov'
-require 'pry'
-require 'coveralls'
+unless ENV['RUBY_VERSION'].match /^rbx/
+  require 'simplecov'
+  require 'simplecov-rcov'
+  require 'pry'
+  require 'coveralls'
 
-Coveralls.wear!
+  Coveralls.wear!
 
-class SimpleCov::Formatter::MergedFormatter
-  def format(result)
-    SimpleCov::Formatter::HTMLFormatter.new.format(result)
-    SimpleCov::Formatter::RcovFormatter.new.format(result)
-  end
-end
-
-SimpleCov.formatter = SimpleCov::Formatter::MergedFormatter
-
-SimpleCov.start do
-  add_group 'Interactors', 'mining_depot/interactors'
-  add_group 'Entities',    'mining_depot/entities'
-
-  add_group 'Library' do |src_file|
-    src_file.filename.match %r{lib/mining_depot/[^/]+.rb}
+  class SimpleCov::Formatter::MergedFormatter
+    def format(result)
+      SimpleCov::Formatter::HTMLFormatter.new.format(result)
+      SimpleCov::Formatter::RcovFormatter.new.format(result)
+    end
   end
 
-  add_filter "/spec/"
+  SimpleCov.formatter = SimpleCov::Formatter::MergedFormatter
+
+  SimpleCov.start do
+    add_group 'Interactors', 'mining_depot/interactors'
+    add_group 'Entities',    'mining_depot/entities'
+
+    add_group 'Library' do |src_file|
+      src_file.filename.match %r{lib/mining_depot/[^/]+.rb}
+    end
+
+    add_filter "/spec/"
+  end
 end
 
 require 'mining_depot'
