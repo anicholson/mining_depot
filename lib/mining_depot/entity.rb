@@ -8,5 +8,9 @@ module MiningDepot
     class << self
       attr_accessor :logger
     end
+
+    def logger
+      @logger || MiningDepot::Entity.logger
+    end
   end
 end

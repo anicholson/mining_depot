@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Truck do
-  it { should be_a MiningDepot::Entity }
+  it_behaves_like 'an Entity'
 
   describe '#capacity' do
     it { should respond_to :capacity }

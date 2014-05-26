@@ -1,8 +1,10 @@
 require 'spec_helper'
 
 describe Mine do
-  let(:mine) { Mine.new logger: double, minerals: :silver }
-  it { should be_a MiningDepot::Entity }
+  it_behaves_like 'an Entity'
+  it_behaves_like 'an active object'
+
+  let(:mine) { Mine.new logger: double, minerals: :silver, speed: 1 }
 
   describe '#products' do
     let(:result) { mine.products }
@@ -124,7 +126,7 @@ describe Mine do
     end
   end
 
-  describe 'product' do
+  describe '#products' do
     subject { mine }
     it { should respond_to :products }
     it 'returns an array of Symbol' do
@@ -133,5 +135,8 @@ describe Mine do
     end
   end
 
-  its(:semaphore) { should be_a Mutex }
+  describe '#speed' do
+    let(:result) { mine.speed }
+    it { result.should be_a Fixnum }
+  end
 end
