@@ -12,5 +12,7 @@ module MiningDepot
     def logger
       @logger || MiningDepot::Entity.logger
     end
+
+    attribute :semaphore, Mutex, reader: :protected, writer: :private
   end
 end

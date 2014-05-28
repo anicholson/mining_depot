@@ -12,7 +12,7 @@ describe Depot do
     let(:depot) { Depot.new capacity: 10 }
 
     it 'is thread-safe' do
-      expect(depot.semaphore).to receive(:synchronize)
+      expect(depot.instance_variable_get(:@semaphore)).to receive(:synchronize)
       depot.receive_load(gold: 5)
     end
 

@@ -3,7 +3,9 @@ require 'mining_depot/entity'
 require 'logger'
 
 class Mine < MiningDepot::Entity
-  attr_accessor :semaphore, :logger, :trigger, :speed
+  attribute :speed, Integer, default: 1
+
+  attr_accessor :semaphore, :logger, :trigger
 
   class Machinery < Thread
     attr_reader :error_logger
@@ -31,7 +33,7 @@ class Mine < MiningDepot::Entity
     @trigger   = ConditionVariable.new
     @machinery = machine
     @minerals  = options[:minerals] || {}
-    @speed     = options[:speed]    || 1
+    @speed     = options[:speed]
   end
 
   def status
