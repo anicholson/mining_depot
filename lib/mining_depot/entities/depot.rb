@@ -2,7 +2,6 @@
 require 'mining_depot/entity'
 
 class Depot < MiningDepot::Entity
-  attribute :semaphore, Mutex,                 writer: :private
   attribute :loads,     Hash[Symbol => Float], writer: :private
   attribute :capacity,  Integer,               default: 100
 

@@ -14,4 +14,15 @@ shared_examples_for 'an Entity' do
       expect(obj.logger).to be(logger)
     end
   end
+
+  describe 'protected attributes' do
+    before(:each) do
+      described_class.send(
+        :public,
+        *described_class.protected_instance_methods
+      )
+    end
+
+    it { should respond_to :semaphore }
+  end
 end
