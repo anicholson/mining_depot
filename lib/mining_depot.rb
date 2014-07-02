@@ -5,7 +5,7 @@ require 'mining_depot/entity'
 require 'logger'
 
 # rubocop:disable LineLength
-%w(entities interactors).each do |src_directory|
+%w(entities interactors interfaces).each do |src_directory|
   project_files = File.expand_path("../mining_depot/#{src_directory}/**/*.rb", __FILE__)
   Dir[project_files].each { |f| require f }
 end

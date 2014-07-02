@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe Truck do
   it_behaves_like 'an Entity'
+  it_behaves_like 'a Receiver'
 
   describe '#capacity' do
     it { should respond_to :capacity }
