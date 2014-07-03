@@ -5,3 +5,7 @@ AllCops:
 
 Documentation:
   Enabled: false
+AndOr:
+  Enabled: false
+SignalException:
+  Enabled: false
