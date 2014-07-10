@@ -7,6 +7,7 @@
 #
 
 require 'bundler/setup'
+require 'rspec/its'
 
 unless ENV['RUBY_VERSION'].match /^rbx/
   require 'simplecov'
