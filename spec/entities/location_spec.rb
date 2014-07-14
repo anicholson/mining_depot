@@ -52,4 +52,10 @@ describe Location do
       end
     end
   end
+
+  describe 'states' do
+    [:road?, :mine?, :depot?, :building?].each do |state|
+      it { should respond_to(state) }
+    end
+  end
 end

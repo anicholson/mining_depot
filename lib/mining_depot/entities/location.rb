@@ -3,7 +3,10 @@ require 'mining_depot/entity'
 require 'hashie'
 
 class Location < MiningDepot::Entity
-  attr_reader :coordinates, :name
+  attribute :name,        String,                  writer: :private
+  attribute :coordinates, Hash[Symbol => Integer], writer: :private
+  attribute :building,    MiningDepot::Entity,     writer: :private
+  attribute :road,        Boolean,                 writer: :private
 
   def initialize(params = {})
     x     = params[:x] || 0
@@ -15,5 +18,21 @@ class Location < MiningDepot::Entity
   def name
     name = @name || 'Location'
     "#{name} (#{coordinates.x}, #{coordinates.y})"
+  end
+
+  def road?
+    building? || @road
+  end
+
+  def mine?
+    building? && building.is_a?(Mine)
+  end
+
+  def depot?
+    building? && building.is_a?(Depot)
+  end
+
+  def building?
+    building
   end
 end

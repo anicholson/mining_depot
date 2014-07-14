@@ -7,4 +7,7 @@ class World < MiningDepot::Entity
   attribute :depots, Array[Depot]
   attribute :mines,  Array[Mine]
   attribute :trucks, Array[Truck]
+
+  attribute :height, Integer, default: 100
+  attribute :width,  Integer, default: 100
 end

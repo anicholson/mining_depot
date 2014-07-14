@@ -13,4 +13,8 @@ describe Truck do
       truck.capacity.should eq(100)
     end
   end
+
+  describe '#location' do
+    it { should respond_to :location }
+  end
 end
