@@ -15,4 +15,10 @@ class Truck < MiningDepot::Entity
 
   def start
   end
+
+  def move_to(location)
+    semaphore.synchronize do
+      @location = location
+    end
+  end
 end

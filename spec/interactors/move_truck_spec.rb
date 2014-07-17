@@ -43,11 +43,21 @@ describe MoveTruck do
       let(:current_l) { Location.new(x: 1, y:0)}
 
       it { should be_success }
+      it 'has moved' do
+        subject
+        expect(truck.location.coordinates.x).to eq(location.coordinates.x)
+        expect(truck.location.coordinates.y).to eq(location.coordinates.y)
+      end
     end
 
     context 'non-adjacent grid point' do
       let(:current_l) { Location.new(x: 1, y:1)}
       it { should_not be_success }
+      it 'has not moved' do
+        subject
+        expect(truck.location.coordinates.x).to eq(current_l.coordinates.x)
+        expect(truck.location.coordinates.y).to eq(current_l.coordinates.y)
+      end
     end
   end
 end

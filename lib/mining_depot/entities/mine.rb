@@ -3,7 +3,9 @@ require 'mining_depot/entity'
 require 'logger'
 
 class Mine < MiningDepot::Entity
-  attribute :speed, Integer, default: 1
+  attribute :speed,    Integer,       default: 1
+  attribute :minerals, Array[Symbol], default: [:silver]
+  attribute :storage,  Hash[Symbol => Integer]
 
   attr_accessor :semaphore, :logger, :trigger
 
@@ -18,6 +20,7 @@ class Mine < MiningDepot::Entity
     def initialize(mine)
       @error_logger = Logger.new('errors.log')
       @mine = mine
+      self.abort_on_exception = true
       super(mine)
     end
 
@@ -27,13 +30,12 @@ class Mine < MiningDepot::Entity
   end
 
   def initialize(options = {})
+    super(options)
     @logger    = options[:logger] || MiningDepot::Entity.logger
     @state     = :stopped
     @semaphore = Mutex.new
     @trigger   = ConditionVariable.new
     @machinery = machine
-    @minerals  = options[:minerals] || {}
-    @speed     = options[:speed]
   end
 
   def status
@@ -57,17 +59,18 @@ class Mine < MiningDepot::Entity
     @state
   end
 
-  def products
-    [@minerals]
-  end
+  alias_method :products, :minerals
 
   def depot_storage
-    products.each_with_object({}) do |mineral, h|
-      h[mineral] = 0
-    end
+    x = snapshot(:storage)
+    products.each_with_object(x) { |m, h| h[m] ||= 0 }
   end
 
   private
+
+  def snapshot(attribute)
+    send(attribute)
+  end
 
   # rubocop:disable MethodLength
   def machine
@@ -78,18 +81,19 @@ class Mine < MiningDepot::Entity
           state = Thread.current.mine_state
           case state
           when :started
-            m.logger.info "#{mine_number}: mining"
-            sleep 2
+            m.logger.info "#{mine_number}: mining #{minerals}"
+            m.semaphore.synchronize { m.storage[m.minerals.first] += 1 }
+            sleep m.speed
           when :stopped
             m.semaphore.synchronize { m.trigger.wait(m.semaphore) }
           else
             m.logger.warn("#{mine_number}: Unknown mine state #{state}")
-            sleep 2
+            sleep m.speed
           end
         end
       rescue => e
-        Machinery.error_logger.warn(e.message)
-        Machinery.error_logger.warn(e.backtrace)
+        error_logger.warn(e.message)
+        error_logger.warn(e.backtrace)
         raise e
       end
     end

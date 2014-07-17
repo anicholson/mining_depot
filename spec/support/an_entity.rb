@@ -6,8 +6,8 @@ shared_examples_for 'an Entity' do
   it { should respond_to :logger }
 
   describe '#logger' do
-    let(:logger) { double('SYSTEM LOGGER') }
-    let(:obj) { described_class.new }
+    let(:logger) { Logger.new('/dev/null') }
+    let(:obj)    { described_class.new }
 
     before { MiningDepot::Entity.logger = logger }
     it 'defaults to the system-wide logger if none provided' do

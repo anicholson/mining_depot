@@ -11,7 +11,22 @@ class CreateDemoWorld < Interactor
   def execute
     World.new(
       width:  world[:width],
-      height: world[:height]
+      height: world[:height],
+      mines:  mines
     )
+  end
+
+  private
+
+  def mines
+    speeds   = (1..10).to_a
+    minerals = [:silver, :gold, :copper]
+
+    (1..150).map do
+      Mine.new(
+        speed: speeds.sample,
+        minerals: minerals.sample
+      )
+    end
   end
 end

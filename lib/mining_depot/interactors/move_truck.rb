@@ -8,13 +8,16 @@ class MoveTruck < Interactor
     model :location, new_records: true
   end
 
-  def execute
-    unless adjacent?(truck.location.coordinates, location.coordinates)
-      add_error(:location, :invalid_destination)
-      return false
-    end
+  optional { model :system }
 
-    true # TODO: actually move truck
+  def execute
+    catch :precondition_failure do
+      guard_against(:location, :invalid_destination) do
+        adjacent?(truck.location.coordinates, location.coordinates)
+      end
+
+      guard_against(:location, :unable_to_move) { truck.move_to(location) }
+    end
   end
 
   def adjacent?(l1, l2)
@@ -26,5 +29,16 @@ class MoveTruck < Interactor
     not_same     = !(x_dist == 0 && y_dist == 0) # same location
 
     not_same && close_enough && not_diagonal
+  end
+
+  def guard_against(input, error_code, &block)
+    unless block && block.call
+      add_error(input, error_code)
+      throw :precondition_failure
+    end
+    true
+  rescue => e
+    add_error(:system, :error, e.message)
+    throw :precondition_failure
   end
 end

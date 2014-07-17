@@ -4,7 +4,8 @@ describe Mine do
   it_behaves_like 'an Entity'
   it_behaves_like 'an active object'
 
-  let(:mine) { Mine.new logger: double, minerals: :silver, speed: 1 }
+  let(:logger) { Logger.new("/dev/null") }
+  let(:mine)   { Mine.new logger: logger, minerals: :silver, speed: 1 }
 
   describe '#products' do
     let(:result) { mine.products }
@@ -114,15 +115,14 @@ describe Mine do
   end
 
   describe '#machine' do
-    let(:logger) { double('logger', warn: true) }
     let(:mine) { Mine.new logger: logger, minerals: :copper }
     it { mine.instance_variable_get(:@machinery).should be_a Mine::Machinery }
 
     it 'logs when the mine is in a strange state' do
+      logger.should receive(:warn).at_least(:once)
       Mine::Machinery.any_instance.stub(:mine_state).and_return(:WAT)
       m = Mine.new logger: logger, minerals: :lol
       sleep(0.01)
-      expect(logger).to have_received(:warn)
     end
   end
 
