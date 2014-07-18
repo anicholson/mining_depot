@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'mining_depot/entity'
 require 'mining_depot/entities/mine'
 require 'mining_depot/entities/truck'

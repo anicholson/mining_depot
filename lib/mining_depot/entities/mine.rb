@@ -1,4 +1,5 @@
 # encoding: utf-8
+
 require 'mining_depot/entity'
 require 'logger'
 

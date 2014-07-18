@@ -1,4 +1,4 @@
-# encoding utf-8
+# encoding: utf-8
 
 require 'mining_depot/interactor'
 
