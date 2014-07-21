@@ -139,4 +139,8 @@ describe Mine do
     let(:result) { mine.speed }
     it { result.should be_a Fixnum }
   end
+
+  describe '#location' do
+    it { should respond_to(:location) }
+  end
 end

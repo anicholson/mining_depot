@@ -5,7 +5,7 @@ require 'hashie'
 class Location < MiningDepot::Entity
   attribute :name,        String,                  writer: :private
   attribute :coordinates, Hash[Symbol => Integer], writer: :private
-  attribute :building,    MiningDepot::Entity,     writer: :private
+  attribute :building,    MiningDepot::Entity
   attribute :road,        Boolean,                 writer: :private
 
   def initialize(params = {})

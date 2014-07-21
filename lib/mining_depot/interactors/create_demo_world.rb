@@ -14,21 +14,35 @@ class CreateDemoWorld < Interactor
     World.new(
       width:  world[:width],
       height: world[:height],
-      mines:  mines
-    )
+      mines:  generate_mines
+    ).tap do |w|
+      place_buildings!(w, w.mines)
+    end
   end
 
   private
 
-  def mines
+  def generate_mines
     speeds   = (1..10).to_a
     minerals = [:silver, :gold, :copper]
 
-    (1..150).map do
+    (1..10).map do
       Mine.new(
         speed: speeds.sample,
         minerals: minerals.sample
       )
+    end
+  end
+
+  def place_buildings!(w, mines)
+    mines.each do |m|
+      y = rand world[:height]
+      x = rand world[:width]
+      location = w[x, y]
+
+      redo if location.building
+      m.location        = location
+      location.building = m
     end
   end
 end
