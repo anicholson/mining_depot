@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 require 'mining_depot/entity'
+require 'mining_depot/entities/location'
 require 'logger'
 
 class Mine < MiningDepot::Entity
