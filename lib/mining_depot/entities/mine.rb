@@ -7,7 +7,7 @@ class Mine < MiningDepot::Entity
   attribute :speed,    Integer,       default: 1
   attribute :minerals, Array[Symbol], default: [:silver]
   attribute :storage,  Hash[Symbol => Integer]
-  attribute :location, Location
+  attribute :location, ::Location
 
   attr_accessor :semaphore, :logger, :trigger
 
