@@ -7,6 +7,7 @@ class Location < MiningDepot::Entity
   attribute :coordinates, Hash[Symbol => Integer], writer: :private
   attribute :building,    MiningDepot::Entity
   attribute :road,        Boolean,                 writer: :private
+  attribute :world
 
   def initialize(params = {})
     x     = params[:x] || 0
