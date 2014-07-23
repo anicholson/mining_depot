@@ -69,6 +69,10 @@ class Mine < MiningDepot::Entity
     products.each_with_object(x) { |m, h| h[m] ||= 0 }
   end
 
+  def available?
+    true # for now, all mines are always available. TODO: Add criteria
+  end
+
   private
 
   def snapshot(attribute)

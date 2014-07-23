@@ -17,4 +17,8 @@ describe Truck do
   describe '#location' do
     it { should respond_to :location }
   end
+
+  describe '#destination' do
+    it { should respond_to :destination}
+  end
 end

@@ -14,9 +14,11 @@ class CreateDemoWorld < Interactor
     World.new(
       width:  world[:width],
       height: world[:height],
-      mines:  generate_mines
+      mines:  generate_mines,
+      depots: generate_depots
     ).tap do |w|
       place_buildings!(w, w.mines)
+      place_buildings!(w, w.depots)
     end
   end
 
@@ -34,15 +36,19 @@ class CreateDemoWorld < Interactor
     end
   end
 
-  def place_buildings!(w, mines)
-    mines.each do |m|
+  def generate_depots
+    (1..5).map { Depot.new(capacity: 2000) }
+  end
+
+  def place_buildings!(w, buildings)
+    buildings.each do |b|
       y = rand world[:height]
       x = rand world[:width]
       location = w[x, y]
 
       redo if location.building
-      m.location        = location
-      location.building = m
+      b.location        = location
+      location.building = b
     end
   end
 end
