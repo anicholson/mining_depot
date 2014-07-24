@@ -15,10 +15,25 @@ class Truck < MiningDepot::Entity
   end
 
   def start
-    Thread.new do
+    Thread.new(self) do |truck|
+      l = truck.logger
+      l.info 'Starting Truck.'
       loop do
-        _destination = next_destination if _destination.nil?
-        # TODO: Get next location and attempt to move to it
+        # truck.destination = truck.next_destination if truck.destination.nil?
+
+        next_loc = truck.next_location(truck.location)
+        l.info "moving to #{next_loc.coordinates}"
+
+        s = MoveTruck.run(
+          truck: truck,
+          location: truck.next_location(truck.location)
+        )
+
+        l.info "Moved: #{s.success?}"
+
+        time = s.success? ? 0.5 : 0.3
+        l.info "Sleeping: #{time}"
+        sleep time
       end
     end
   end
@@ -26,6 +41,27 @@ class Truck < MiningDepot::Entity
   def move_to(location)
     semaphore.synchronize do
       @location = location
+    end
+  end
+
+  def location
+    semaphore.synchronize { @location }
+  end
+
+  def next_destination
+
+  end
+
+  def next_location(current)
+    c = current.coordinates
+    x, y = c[:x], c[:y]
+
+    change = [1,-1].sample
+
+    if n = rand(4).even?
+      current.world[x+change,y]
+    else
+      current.world[x, y+change]
     end
   end
 
