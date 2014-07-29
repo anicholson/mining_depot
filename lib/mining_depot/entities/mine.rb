@@ -99,8 +99,8 @@ class Mine < MiningDepot::Entity
           end
         end
       rescue => e
-        error_logger.warn(e.message)
-        error_logger.warn(e.backtrace)
+        Thread.current.error_logger.warn(e.message)
+        Thread.current.error_logger.warn(e.backtrace)
         raise e
       end
     end
