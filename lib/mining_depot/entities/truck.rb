@@ -9,6 +9,9 @@ class Truck < MiningDepot::Entity
   attribute :destination, Location, writer: :private
   attribute :load,        Hash[Symbol => Integer], writer: :private
 
+  SUCCESS_TIMER = 0.5
+  FAILURE_TIMER = 0.3
+
   def initialize(*args)
     super(*args)
     @semaphore = Mutex.new
@@ -19,19 +22,9 @@ class Truck < MiningDepot::Entity
       l = truck.logger
       l.info 'Starting Truck.'
       loop do
-        # truck.destination = truck.next_destination if truck.destination.nil?
+        s    = TruckLoop.run(truck: truck)
 
-        next_loc = truck.next_location(truck.location)
-        l.info "moving to #{next_loc.coordinates}"
-
-        s = MoveTruck.run(
-          truck: truck,
-          location: truck.next_location(truck.location)
-        )
-
-        l.info "Moved: #{s.success?}"
-
-        time = s.success? ? 0.5 : 0.3
+        time = s.success? ? SUCCESS_TIMER : FAILURE_TIMER
         l.info "Sleeping: #{time}"
         sleep time
       end
@@ -39,9 +32,7 @@ class Truck < MiningDepot::Entity
   end
 
   def move_to(location)
-    semaphore.synchronize do
-      @location = location
-    end
+    semaphore.synchronize { @location = location }
   end
 
   def location
@@ -49,19 +40,17 @@ class Truck < MiningDepot::Entity
   end
 
   def next_destination
-
   end
 
   def next_location(current)
-    c = current.coordinates
-    x, y = c[:x], c[:y]
+    c      = current.coordinates
+    x, y   = c[:x], c[:y]
+    change = [1, -1].sample
 
-    change = [1,-1].sample
-
-    if n = rand(4).even?
-      current.world[x+change,y]
+    if rand(4).even?
+      current.world[x + change, y]
     else
-      current.world[x, y+change]
+      current.world[x, y + change]
     end
   end
 

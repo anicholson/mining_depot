@@ -60,4 +60,20 @@ describe MoveTruck do
       end
     end
   end
+
+  describe 'error handling' do
+    let(:interactor) { MoveTruck.new }
+    let(:code) do
+      interactor.guard_against(:_, :_) { fail 'Something horrible happened' }
+    end
+
+    it 'rescues from exceptions' do
+      expect { code }.to throw_symbol(:precondition_failure)
+    end
+
+    it 'captures the error' do
+      interactor.should_receive(:add_error).with(:system, :error, 'Something horrible happened')
+      catch(:precondition_failure) { code }
+    end
+  end
 end
