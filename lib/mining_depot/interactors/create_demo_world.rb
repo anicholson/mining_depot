@@ -11,7 +11,7 @@ class CreateDemoWorld < Interactor
   end
 
   def execute
-    World.new(
+    Universe[Universe::DEFAULT] = World.new(
       width:  world[:width],
       height: world[:height],
       mines:  generate_mines,
