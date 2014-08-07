@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class TruckLoop < Interactor
   required do
     model :truck
