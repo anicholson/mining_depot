@@ -13,10 +13,6 @@ class Universe
     worlds[name] = world
   end
 
-  def self.count
-    worlds.count
-  end
-
   def self.reset!
     # FIXME: this should :stop all `World`s before clearing,
     # otherwise there will be resource leaks. (andrewn, 4/8/14)

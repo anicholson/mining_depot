@@ -4,8 +4,8 @@ describe Universe do
   subject { Universe }
   its(:worlds) { should be_a Hash }
 
-  describe 'behaves like a Hash' do
-    [:[], :[]=, :count].each {|m| it { should respond_to(m) }}
+  describe 'has Hash-like access syntax' do
+    [:[], :[]= ].each {|m| it { should respond_to(m) }}
   end
 
   it 'can be cleared' do

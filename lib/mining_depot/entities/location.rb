@@ -36,4 +36,8 @@ class Location < MiningDepot::Entity
   def building?
     building
   end
+
+  def truck?
+    world.trucks_at(self).any?
+  end
 end

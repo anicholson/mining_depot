@@ -10,11 +10,22 @@ describe GetWorldView do
     subject { model }
     it { should be_an(OpenStruct) }
 
-    describe 'map' do
+    describe 'map:' do
       subject { model.map }
       it { should be_a Matrix }
-      its(:column_size) { should eq(75) }
-      its(:row_size)    { should eq(50) }
+
+      describe 'dimensions' do
+        its(:column_size) { should eq(75) }
+        its(:row_size)    { should eq(50) }
+      end
+
+      describe 'location:' do
+        subject { model.map[20,20] }
+
+        it 'matches the API of a location' do
+          [:mine, :depot, :truck].each { |m| subject.should respond_to(m) }
+        end
+      end
     end
 
     describe 'counts' do

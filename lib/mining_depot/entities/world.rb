@@ -32,6 +32,10 @@ class World < MiningDepot::Entity
     id == other.id
   end
 
+  def trucks_at(location)
+    trucks.select { |t| t.coordinates == location.coordinates }
+  end
+
   private
 
   attr_reader :id
