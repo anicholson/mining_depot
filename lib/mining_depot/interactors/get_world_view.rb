@@ -18,23 +18,23 @@ class GetWorldView < Interactor
   end
 
   def execute
-    WorldView.new.tap do |v|
-      v[:counts] = counts_for(world)
-      v[:dimensions] = [world.width, world.height]
-      v[:map]    = Matrix.build(world.height, world.width) do |r, c|
+    WorldView.new(
+      counts:     counts_for(world),
+      dimensions: [world.width, world.height],
+      map:        Matrix.build(world.height, world.width) do |r, c|
         square_at(r, c)
       end
-    end
+    )
   end
 
   private
 
   def counts_for(world)
-    CountView.new.tap do |c|
-      c.mines  = world.mines.count
-      c.trucks = 0
-      c.depots = world.depots.count
-    end
+    CountView.new(
+      mines:  world.mines.count,
+      trucks: 0,
+      depots: world.depots.count
+    )
   end
 
   def square_at(row, col)
