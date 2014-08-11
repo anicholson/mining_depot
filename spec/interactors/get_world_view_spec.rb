@@ -32,7 +32,7 @@ describe GetWorldView do
       subject { model.counts }
 
       it { should be_an OpenStruct }
-      its(:trucks) { should eq(0) }
+      its(:trucks) { should eq(5) }
       its(:mines)  { should eq(10) }
       its(:depots) { should eq(05) }
     end

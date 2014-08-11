@@ -13,4 +13,8 @@ describe CreateDemoWorld do
     subject
     Universe.should have(1).world
   end
+
+  it('generates mines')  { expect(subject.mines.count).to_not  eq(0) }
+  it('generates depots') { expect(subject.depots.count).to_not eq(0) }
+  it('generates trucks') { expect(subject.trucks.count).to_not eq(0) }
 end

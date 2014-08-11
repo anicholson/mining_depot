@@ -33,7 +33,9 @@ class World < MiningDepot::Entity
   end
 
   def trucks_at(location)
-    trucks.select { |t| t.coordinates == location.coordinates }
+    trucks.select do |t|
+      t.location && (t.location.coordinates == location.coordinates)
+    end
   end
 
   private

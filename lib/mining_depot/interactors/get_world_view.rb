@@ -34,7 +34,7 @@ class GetWorldView < Interactor
   def counts_for(world)
     CountView.new(
       mines:  world.mines.count,
-      trucks: 0,
+      trucks: world.trucks.count,
       depots: world.depots.count
     )
   end

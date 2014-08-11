@@ -11,18 +11,24 @@ class CreateDemoWorld < Interactor
   end
 
   def execute
-    Universe[Universe::DEFAULT] = World.new(
-      width:  world[:width],
-      height: world[:height],
-      mines:  generate_mines,
-      depots: generate_depots
-    ).tap do |w|
+    Universe[Universe::DEFAULT] = generate_world.tap do |w|
       place_buildings!(w, w.mines)
       place_buildings!(w, w.depots)
+      place_trucks!(w, w.trucks)
     end
   end
 
   private
+
+  def generate_world
+    World.new(
+      width:  world[:width],
+      height: world[:height],
+      mines:  generate_mines,
+      depots: generate_depots,
+      trucks: generate_trucks
+    )
+  end
 
   def generate_mines
     speeds   = (1..10).to_a
@@ -42,13 +48,31 @@ class CreateDemoWorld < Interactor
 
   def place_buildings!(w, buildings)
     buildings.each do |b|
-      y = rand world[:height]
-      x = rand world[:width]
-      location = w[x, y]
+      location = random_location_within(w)
 
       redo if location.building
       b.location        = location
       location.building = b
     end
+  end
+
+  def place_trucks!(w, trucks)
+    trucks.each do |t|
+      location = random_location_within(w)
+
+      redo if location.truck?
+
+      t.move_to location
+    end
+  end
+
+  def generate_trucks
+    (1..5).map { Truck.new }
+  end
+
+  def random_location_within(world_entity)
+    y = rand world_entity.height
+    x = rand world_entity.width
+    world_entity[x, y]
   end
 end
