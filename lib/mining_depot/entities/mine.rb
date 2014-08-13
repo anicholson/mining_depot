@@ -85,7 +85,7 @@ class Mine < MiningDepot::Entity
       begin
         mine_number = Machinery.next_mine_number
         loop do
-          state = Thread.current.mine_state
+          state = m.status[:state]
           case state
           when :started
             m.logger.info "#{mine_number}: mining #{minerals}"
