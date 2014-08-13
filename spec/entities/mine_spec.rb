@@ -115,14 +115,13 @@ describe Mine do
   end
 
   describe '#machine' do
-    let(:mine) { Mine.new logger: logger, minerals: :copper }
+    let(:mine) { Mine.new logger: logger, minerals: :copper, speed: 0 }
+
     it { mine.instance_variable_get(:@machinery).should be_a Mine::Machinery }
 
     it 'logs when the mine is in a strange state' do
-      logger.should receive(:warn).at_least(:once)
-      Mine.any_instance.stub(:speed).and_return(0)
-      Mine::Machinery.any_instance.stub(:mine_state).and_return(:WAT)
-      m = Mine.new logger: logger, minerals: :lol
+      mine.instance_variable_set(:@state, :WAT)
+      expect(logger).to receive(:warn).at_least(:once)
       sleep 0.1
     end
   end
