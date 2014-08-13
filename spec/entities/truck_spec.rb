@@ -27,7 +27,7 @@ describe Truck do
     it { should respond_to :next_location }
 
     describe 'contract' do
-      subject { pending('algorithm will change'); truck.next_location(location) }
+      subject { skip('algorithm will change'); truck.next_location(location) }
       context 'when in a corner' do
         let(:location) { Location.new(x: 0, y: 0) }
 
