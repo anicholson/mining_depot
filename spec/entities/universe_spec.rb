@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe Universe do
-  subject { Universe }
+describe MiningDepot::Universe do
+  subject { MiningDepot::Universe }
   its(:worlds) { should be_a Hash }
 
   describe 'has Hash-like access syntax' do
@@ -9,11 +9,11 @@ describe Universe do
   end
 
   it 'can be cleared' do
-    Universe.reset!
+    MiningDepot::Universe.reset!
 
-    Universe['lol'] = Object.new
+    MiningDepot::Universe['lol'] = Object.new
     subject.should have(1).world
-    Universe.reset!
+    MiningDepot::Universe.reset!
     subject.should have(0).worlds
   end
 end

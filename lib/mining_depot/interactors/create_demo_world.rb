@@ -3,6 +3,8 @@
 require 'mining_depot/interactor'
 
 class CreateDemoWorld < Interactor
+  Universe = MiningDepot::Universe
+
   required do
     hash :world do
       integer :width,  min: 20

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe CreateDemoWorld do
-  before  { Universe.reset!                   }
+  before  { MiningDepot::Universe.reset!      }
   subject { described_class.run(input).result }
 
   let(:input) {{ world: { height: 50, width: 20 } }}
@@ -9,9 +9,9 @@ describe CreateDemoWorld do
   it { should be_a World }
 
   it 'stores the world in the Universe' do
-    Universe.should have(0).worlds
+    MiningDepot::Universe.should have(0).worlds
     subject
-    Universe.should have(1).world
+    MiningDepot::Universe.should have(1).world
   end
 
   it('generates mines')  { expect(subject.mines.count).to_not  eq(0) }

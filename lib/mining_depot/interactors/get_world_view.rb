@@ -3,6 +3,8 @@
 require 'mining_depot/interactor'
 
 class GetWorldView < Interactor
+  Universe = MiningDepot::Universe
+
   class WorldView < OpenStruct
     def inspect
       "width: #{map.column_size} height: #{map.row_size} #{counts.inspect}"
