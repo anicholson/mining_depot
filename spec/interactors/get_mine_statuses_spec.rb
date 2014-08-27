@@ -3,31 +3,31 @@ require 'spec_helper'
 describe GetMineStatuses do
   it_behaves_like 'an Interactor'
 
-  describe 'input validations' do
-    let(:result) { GetMineStatuses.run(input) }
+  let(:outcome) { GetMineStatuses.run(input) }
 
-    context 'with no inputs' do
-      let(:input) { Hash.new }
-      it { expect(result).not_to be_success }
-    end
-
-    context 'with wrong input' do
-      let(:input) { { mines: 2 }}
-      it { expect(result).not_to be_success }
-    end
-
-    context 'with array of incorrect objects' do
-      let(:input) { { mines: [1,2,3] }}
-      it { expect(result).not_to be_success }
-    end
+  context 'with no inputs' do
+    let(:input) { Hash.new }
+    it { expect(outcome).not_to be_success }
   end
 
-  it 'calls status on each Mine provided' do
-    mines = []
-    3.times { mines << Mine.new }
+  context 'with wrong input' do
+    let(:input) { { mines: 2 }}
+    it { expect(outcome).not_to be_success }
+  end
 
-    mines.each {|m| m.should receive(:status) }
+  context 'with array of incorrect objects' do
+    let(:input) { { mines: [1,2,3] }}
+    it { expect(outcome).not_to be_success }
+  end
 
-    GetMineStatuses.run(mines: mines)
+  context 'with good input' do
+    let(:mines) { (1..3).map { Mine.new } }
+    let(:input) { { mines: mines } }
+
+    it { expect(outcome).to be_success }
+
+    it 'returns a status for each Mine provided' do
+      expect(outcome.result.length).to eq(3)
+    end
   end
 end
