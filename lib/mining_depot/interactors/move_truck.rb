@@ -13,22 +13,11 @@ class MoveTruck < Interactor
   def execute
     catch :precondition_failure do
       guard_against(:location, :invalid_destination) do
-        adjacent?(truck.location.coordinates, location.coordinates)
+        MovementRule.new.allow?(truck.location, location)
       end
 
       guard_against(:location, :unable_to_move) { truck.move_to(location) }
     end
-  end
-
-  def adjacent?(l1, l2)
-    x_dist = (l1.x - l2.x).abs
-    y_dist = (l1.y - l2.y).abs
-
-    close_enough = !(x_dist >  1 || y_dist >  1) # too far
-    not_diagonal = !(x_dist == 1 && y_dist == 1) # diagonal
-    not_same     = !(x_dist == 0 && y_dist == 0) # same location
-
-    not_same && close_enough && not_diagonal
   end
 
   def guard_against(input, error_code, &block)
@@ -40,5 +29,24 @@ class MoveTruck < Interactor
   rescue => e
     add_error(:system, :error, e.message)
     throw :precondition_failure
+  end
+
+  class MovementRule
+    def allow?(from, to)
+      adjacent?(from.coordinates, to.coordinates)
+    end
+
+    private
+
+    def adjacent?(l1, l2)
+      x_dist = (l1.x - l2.x).abs
+      y_dist = (l1.y - l2.y).abs
+
+      close_enough = !(x_dist >  1 || y_dist >  1) # too far
+      not_diagonal = !(x_dist == 1 && y_dist == 1) # diagonal
+      not_same     = !(x_dist == 0 && y_dist == 0) # same location
+
+      not_same && close_enough && not_diagonal
+    end
   end
 end

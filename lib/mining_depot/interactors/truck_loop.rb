@@ -1,6 +1,9 @@
 # encoding: utf-8
 
 class TruckLoop < Interactor
+  SUCCESS_TIMER = 0.5
+  FAILURE_TIMER = 0.3
+
   required do
     model :truck
   end
@@ -13,10 +16,12 @@ class TruckLoop < Interactor
     l.info "moving to #{next_loc.coordinates}"
 
     s = MoveTruck.run(
-      truck: truck,
-      location: truck.next_location(truck.location)
-    )
+                      truck: truck,
+                      location: truck.next_location(truck.location)
+                      )
 
     l.info "Moved: #{s.success?}"
+
+    s.success? ? sleep(SUCCESS_TIMER) : sleep(FAILURE_TIMER)
   end
 end

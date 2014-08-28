@@ -19,20 +19,20 @@ describe Truck do
   end
 
   describe '#destination' do
-    it { should respond_to :destination}
+    it { should respond_to :destination }
   end
 
-  describe '#next_location' do
-    let (:truck) { Truck.new }
-    it { should respond_to :next_location }
+  describe '#navigation' do
+    it { should respond_to :navigation }
+  end
 
-    describe 'contract' do
-      subject { skip('algorithm will change'); truck.next_location(location) }
-      context 'when in a corner' do
-        let(:location) { Location.new(x: 0, y: 0) }
-
-        its(:x) { should >= 0 }
-      end
+  describe '#start' do
+    it 'runs its behaviour loop' do
+      behaviour = double
+      truck = Truck.new(behaviour: behaviour)
+      expect(behaviour).to receive(:run).at_least(:once)
+      truck.start
+      sleep 0.1
     end
   end
 end
