@@ -27,15 +27,17 @@ class World < MiningDepot::Entity
   end
 
   def ==(other)
-    return false unless other.is_a? World
-
-    id == other.id
+    other.is_a?(World) && id == other.id
   end
 
   def trucks_at(location)
     trucks.select do |t|
-      t.location && (t.location.coordinates == location.coordinates)
+      t.location && (t.location == location)
     end
+  end
+
+  def trucks_at?(location)
+    trucks_at(location).any?
   end
 
   private

@@ -8,7 +8,6 @@ class Location < MiningDepot::Entity
   attribute :building,    MiningDepot::Entity,     default: NullBuilding.new
   attribute :name,        String,                  writer: :private
   attribute :coordinates, Hash[Symbol => Integer], writer: :private
-  attribute :road,        Boolean,                 writer: :private
   attribute :world
 
   def initialize(params = {})
@@ -16,6 +15,10 @@ class Location < MiningDepot::Entity
     y     = params[:y] || 0
     @name = params[:name]
     @coordinates = Hashie::Mash.new(x: x, y: y)
+  end
+
+  def ==(other)
+    other.is_a?(Location) && (coordinates == other.coordinates)
   end
 
   def name
@@ -29,10 +32,6 @@ class Location < MiningDepot::Entity
 
   def depot?
     building.is_a?(Depot)
-  end
-
-  def building?
-    !building.is_a? NullBuilding
   end
 
   def truck?

@@ -5,13 +5,19 @@ describe Location do
 
   it { should be_a MiningDepot::Entity }
 
+  describe '# ==' do
+    it 'matches on coordinates' do
+      expect(Location.new(x: 5, y:5)).to eq(Location.new(x:5, y:5))
+    end
+  end
+
   it 'has coordinates' do
     should respond_to :coordinates
   end
 
   describe 'coordinates' do
-    let (:x) { nil }
-    let (:y) { nil }
+    let(:x) { nil }
+    let(:y) { nil }
     subject { Location.new(x: x, y: y).coordinates }
 
     it { should respond_to(:[]) }
@@ -54,7 +60,7 @@ describe Location do
   end
 
   describe 'states' do
-    [:road?, :mine?, :depot?, :building?].each do |state|
+    [ :mine?, :depot? ].each do |state|
       it { should respond_to(state) }
     end
   end
