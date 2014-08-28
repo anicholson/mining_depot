@@ -36,6 +36,18 @@ class Truck < MiningDepot::Entity
   def next_destination
   end
 
+  def next_location(current)
+    c      = current.coordinates
+    x, y   = c[:x], c[:y]
+    change = [1, -1].sample
+
+    if rand(4).even?
+      current.world[x + change, y]
+    else
+      current.world[x, y + change]
+    end
+  end
+
   def navigation
   end
 
