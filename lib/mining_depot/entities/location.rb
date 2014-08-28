@@ -3,9 +3,11 @@ require 'mining_depot/entity'
 require 'hashie'
 
 class Location < MiningDepot::Entity
+  class NullBuilding; end
+
+  attribute :building,    MiningDepot::Entity,     default: NullBuilding.new
   attribute :name,        String,                  writer: :private
   attribute :coordinates, Hash[Symbol => Integer], writer: :private
-  attribute :building,    MiningDepot::Entity
   attribute :road,        Boolean,                 writer: :private
   attribute :world
 
@@ -21,20 +23,16 @@ class Location < MiningDepot::Entity
     "#{name} (#{coordinates.x}, #{coordinates.y})"
   end
 
-  def road?
-    building? || @road
-  end
-
   def mine?
-    building? && building.is_a?(Mine)
+    building.is_a?(Mine)
   end
 
   def depot?
-    building? && building.is_a?(Depot)
+    building.is_a?(Depot)
   end
 
   def building?
-    building
+    !building.is_a? NullBuilding
   end
 
   def truck?
